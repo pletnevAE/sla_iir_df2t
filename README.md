@@ -144,21 +144,21 @@ The SLA transformation for the look-ahead depth $M$ consists of three steps:
 
 1. **New denominator** - raise every pole to the power $M$:'
 
-    ```math
+    $$
     A'(z) = (1 - p_1^M \cdot z^{-M}) \cdot (1 - p_2^M \cdot z^{-M}) = 1 + a'_M \cdot z^{-M} + a'_{2M} \cdot z^{-2M},
-    ```
+    $$
 
-    ```math
+    $$
     a'_M = -(p_1^M + p_2^M),
-    ```
+    $$
 
-    ```math
+    $$
     a'_{2M} = (p_1 \cdot p_2)^M = a_2^M.
-    ```
+    $$
 
     To avoid finding the poles $p_1$ and $p_2$, the sum of the powers of the poles ($S_M = p_1^M + p_2^M$), can be calculated using a linear recurrence defined by the coefficients $a_1$ and $a_2$:
 
-    ```math
+    $$
     \begin{cases}
     S_0 = 2, \\
     S_1 = -a_1, \\
@@ -171,17 +171,17 @@ The SLA transformation for the look-ahead depth $M$ consists of three steps:
     a'_2 = 2 \cdot a_2 - a_1^2, \\
     a'_{4} = a_2^2.
     \end{cases}
-    ```
+    $$
 
 2. **Compensating polynomial** - the new denominator must equal the old one multiplied by some polynomial $P(z)$:
 
-    ```math
+    $$
     A'(z) = A(z) \cdot P(z)
-    ```
+    $$
 
     The polynomial multiplication is a convolution, which is a matrix-vector product with a Toeplitz matrix built from the coefficients of $A$. Since $P(z)$ has $2M - 1$ unknown coefficients $p_0 \dots p_{2M - 2}$ and $A'(z)$ has $2M + 1$ coefficients, this is a system of linear equations (SLAE) with $2M + 1$ equations and $2M - 1$ unknowns. For $M = 2$:
 
-    ```math
+    $$
     \begin{bmatrix}
     1 & 0 & 0 \\
     a_1 & 1 & 0 \\
@@ -192,38 +192,38 @@ The SLA transformation for the look-ahead depth $M$ consists of three steps:
     \begin{bmatrix} p_0 \\ p_1 \\ p_2 \end{bmatrix}
     =
     \begin{bmatrix} 1 \\ 0 \\ a'_2 \\ 0 \\ a'_4 \end{bmatrix}
-    ```
+    $$
 
     The system is consistent. Because $A(z)$ is monic (the leading coefficient is 1), the first $2M - 1$ rows form a lower-triangular system that is solved by forward substitution:
 
-    ```math
+    $$
     p_0 = 1, \\
     p_1 = -a_1, \\
     p_2 = a'_2 - a_1 \cdot p_1 - a_2 \cdot p_0 = a_2.
-    ```
+    $$
 
     The last two rows are only consistency checks:
 
-    ```math
+    $$
     a_2 \cdot p_1 + a_1 \cdot p_2 = -a_1 \cdot a_2 + a_1 \cdot a_2 = 0, \\
     a_2 \cdot p_2 = a_2^2 = a'_4.
-    ```
+    $$
 
     For $M = 2$ the result is
 
-    ```math
+    $$
     P(z) = 1 - a_1 \cdot z^{-1} + a_2 \cdot z^{-2} = A(-z),
-    ```
+    $$
 
     so $A'(z) = A(z) \cdot A(-z)$ is an even polynomial. In general
 
-    ```math
+    $$
     P(z) = \prod_i \sum_{k = 0}^{M - 1} p_i^k z^{-k}.
-    ```
+    $$
 
 3. **New numerator** - to keep the transfer function unchanged, the numerator is multiplied by the same polynomial, i.e. by the Toeplitz matrix of $B$:
 
-    ```math
+    $$
     \begin{bmatrix} b'_0 \\ b'_1 \\ b'_2 \\ b'_3 \\ b'_4 \end{bmatrix} =
     \begin{bmatrix}
     b_0 & 0 & 0 \\
@@ -233,17 +233,17 @@ The SLA transformation for the look-ahead depth $M$ consists of three steps:
     0 & 0 & b_2
     \end{bmatrix}
     \begin{bmatrix} p_0 \\ p_1 \\ p_2 \end{bmatrix}
-    ```
+    $$
 
     In the results
 
-    ```math
+    $$
     b'_0 = b_0, \\
     b'_1 = b_1 - b_0 \cdot a_1, \\
     b'_2 = b_2 - b_1 \cdot a_1 + b_0 \cdot a_2, \\
     b'_3 = b_1 \cdot a_2 - b_2 \cdot a_1, \\
     b'_4 = b_2 \cdot a_2.
-    ```
+    $$
 
 The section becomes
 
@@ -312,7 +312,7 @@ The $L_1$-norm determines how many bits the integer part needs. The fraction len
 
 $$P_{noise} = N_{conv} \cdot \frac{q^2}{12} \cdot \sum_{n}{h_{noise}^2[n]},$$
 
-where $h_{noise}[n] = \mathcal{Z}^{-1}\left\{\frac{1}{A'(z)}\right\}$.
+where $h_{\text{noise}}[n] = \mathcal{Z}^{-1}\left\{\frac{1}{A'(z)}\right\}$.
 
 The required $SQNR$ is related to the signal power; for a full-scale sine wave $P_{signal} = 0.5$. Solving
 
